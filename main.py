@@ -40,6 +40,10 @@ class Battlestar():
         return sum([dice >= Battlestar.BASE_ACCURACY for dice in dices])
     
 
+    def damage(self):
+        return Battlestar.hit(self.roll_attack())
+    
+
 if __name__ == "__main__":
     p = Battlestar(40, 20, 2, 10)
     print(p.attack)
@@ -52,3 +56,6 @@ if __name__ == "__main__":
     print(p.health)
     print(p.is_dead())
     print(Battlestar.hit(dices))
+    print('check damage')
+    for i in range(10):
+        print(p.damage())
