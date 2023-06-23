@@ -48,15 +48,25 @@ class Test(unittest.TestCase):
         "20 health is not dead, 0 - is dead"
         p = Battlestar(40, 20, 2, 10)
         p.change_health(-20)
-        self.assertEqual(p.is_dead(), False)
+        self.assertFalse(p.is_dead())
         p.change_health(-30)
-        self.assertEqual(p.is_dead(), True)
+        self.assertTrue(p.is_dead())
 
 
     def test_hit(self):
         "sum of all cases >=  Base accuracy (5)"
         self.assertEqual(Battlestar.hit([1,2,3,4,5,6]), 2)
 
+    
+    def test_damage(self):
+        "run 10000 rounds of attach and calculate damage:) - in average it should be 1/3 and alpha = 99% (diff < 0.01)"
+        p = Battlestar(40, 20, 2, 30)
+        res = 0
+        for i in range(10000):
+            res += p.damage()
+        res /= 100000
+        print(abs(res - 1))
+        self.assertLess(abs(res - 1), 0.01)
 
 if __name__ == "__main__":
     unittest.main()
