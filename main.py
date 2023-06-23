@@ -57,5 +57,4 @@ if __name__ == "__main__":
     print(p.is_dead())
     print(Battlestar.hit(dices))
     print('check damage')
-    for i in range(10):
-        print(p.damage())
+    print(p.damage())
