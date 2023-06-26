@@ -1,12 +1,41 @@
 import random
 import time
+import json
+import pprint
 
+
+def balance_parameters_ships(n=100):
+        ship = lambda i: (data['ships'][i]['name'], data['ships'][i]['health'], data['ships'][i]['shield'], data['ships'][i]['regeneration'], data['ships'][i]['attack'])
+        total_dict = {}
+        for s in range(len(data['ships'])):
+            total_dict[s] = []    
+            for op in range(len(data['ships'])):
+                total_dict[s].append(0)
+                if op == s:
+                    continue
+                res = [0, 0] 
+                for i in range(n):
+                    p1 = Battlestar(*ship(s))
+                    p2 = Battlestar(*ship(op))
+                    while not p1.is_dead() and not p2.is_dead():
+                        p1.fight_round(p2)
+                        p1.change_shield(p1.regeneration)
+                        p2.change_shield(p2.regeneration)
+                    res[0] += int(not p1.is_dead()) + int(p2.is_dead())
+                    res[1] += int(not p2.is_dead()) + int(p1.is_dead())
+                total_dict[s][-1] += res[0] - n
+                # print('result is: ', res, 'for', p2.max_health + p2.max_shield)
+        for el in sorted(total_dict, key=lambda x: sum(total_dict[x]), reverse=True):
+            print(f"Ship {el:2} - {data['ships'][el]['name'][-7:]} has {sum(total_dict[el])/n:=+6.2f}")
+
+            
 class Battlestar():
     
     MAX_CRIT = 10
     BASE_ACCURACY = 5
 
-    def __init__(self, health, shield, regeneration, attack):
+    def __init__(self, name, health, shield, regeneration, attack):
+        self.name = name
         self.health = health
         self.max_health = health
         self.shield = shield
@@ -61,48 +90,44 @@ class Battlestar():
 
         
     def __str__(self) -> str:
-        shield_percentage = round(self.shield / self.max_shield * 100, 2)
+        shield_percentage = round(self.shield / self.max_shield * 100, 2) if self.max_shield else 0
         return(f"Health of your ship is: {self.health}, current shield is on {shield_percentage}% level - {self.shield}")
     
 
 if __name__ == "__main__":
-    # p = Battlestar(40, 20, 2, 10)
-    # print(p.attack)
-    # dices = p.roll_attack()
-    # print(dices)
-    # p.change_health(-30)
-    # print(p.health)
-    # print(p.is_dead())
-    # p.change_health(-30)
-    # print(p.health)
-    # print(p.is_dead())
-    # print(Battlestar.hit(dices))
-    # print(p.damage())
-    p1 = Battlestar(40, 20, 2, 15)
-    p2 = Battlestar(40, 20, 3, 12)
-    i = 1
-    while p1.health == p1.max_health and p2.health == p2.max_health:
-        
-        print(f'____________Round {i}__________________')
-        
-        p1.fight_round(p2)
-        p1.change_shield(p1.regeneration)
-        p2.change_shield(p2.regeneration)
-        print(p1)
-        print(p2)
 
-        i += 1
-        time.sleep(3)
+    start = time.time()
 
-    while not p1.is_dead() and not p2.is_dead():
-        
-        print(f'____________Round {i}__________________')
-        
-        p1.fight_round(p2)
-        p1.change_shield(p1.regeneration)
-        p2.change_shield(p2.regeneration)
-        print(p1)
-        print(p2)
+    with open('ships.json', 'r') as f:
+        data = json.load(f)
 
-        i += 1
-        time.sleep(3)
+    balance_parameters_ships(100)
+    # p1 = Battlestar(10, 35, 3, 20)
+    # p2 = Battlestar(35, 22, 1, 19)
+    # i = 1
+    # while p1.health == p1.max_health and p2.health == p2.max_health:
+        
+    #     print(f'____________Round {i}__________________')
+        
+    #     p1.fight_round(p2)
+    #     p1.change_shield(p1.regeneration)
+    #     p2.change_shield(p2.regeneration)
+    #     print(p1)
+    #     print(p2)
+
+    #     i += 1
+    #     time.sleep(2)
+
+    # while not p1.is_dead() and not p2.is_dead():
+        
+    #     print(f'____________Round {i}__________________')
+        
+    #     p1.fight_round(p2)
+    #     p1.change_shield(p1.regeneration)
+    #     p2.change_shield(p2.regeneration)
+    #     print(p1)
+    #     print(p2)
+
+    #     i += 1
+    #     time.sleep(3)
+    print(f"Processed time is {time.time() - start} sec")

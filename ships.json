@@ -1,0 +1,144 @@
+{
+    "ships" : [
+        {
+            "name": "GalaxyStar-YYY-015",
+            "health": 70,
+            "shield": 30,
+            "regeneration": 0,
+            "attack": 15
+        },
+        {
+            "name": "NebulaSpecter-YYI-015",
+            "health": 60,
+            "shield": 26,
+            "regeneration": 1,
+            "attack": 15
+        },
+        {
+            "name": "NebulaSword-YYY-018",
+            "health": 42,
+            "shield": 36,
+            "regeneration": 0,
+            "attack": 18
+        },
+        {
+            "name": "AstralWarden-YII-015",
+            "health": 50,
+            "shield": 21,
+            "regeneration": 2,
+            "attack": 15
+        },
+        {
+            "name": "NebulaPhoenix-YYI-018",
+            "health": 51,
+            "shield": 16,
+            "regeneration": 1,
+            "attack": 18
+        },
+        {
+            "name": "StarfireSpecter-YYY-021",
+            "health": 24,
+            "shield": 40,
+            "regeneration": 0,
+            "attack": 21
+        },
+        {
+            "name": "OrionDefender-III-015",
+            "health": 30,
+            "shield": 28,
+            "regeneration": 3,
+            "attack": 15
+        },
+        {
+            "name": "CelestialFalcon-YII-018",
+            "health": 35,
+            "shield": 21,
+            "regeneration": 2,
+            "attack": 18
+        },
+        {
+            "name": "NovaBlade-YYI-021",
+            "health": 15,
+            "shield": 40,
+            "regeneration": 1,
+            "attack": 21
+        },
+        {
+            "name": "EclipseFury-YYY-024",
+            "health": 34,
+            "shield": 20,
+            "regeneration": 0,
+            "attack": 24
+        },
+        {
+            "name": "ValkyrieDreadnought-YIV-015",
+            "health": 21,
+            "shield": 22,
+            "regeneration": 4,
+            "attack": 15
+        },
+        {
+            "name": "QuantumVanguard-III-018",
+            "health": 18,
+            "shield": 27,
+            "regeneration": 3,
+            "attack": 18
+        },
+        {
+            "name": "SolarisSentinel-YII-021",
+            "health": 20,
+            "shield": 25,
+            "regeneration": 2,
+            "attack": 21
+        },
+        {
+            "name": "AuroraStrike-YYI-024",
+            "health": 11,
+            "shield": 34,
+            "regeneration": 1,
+            "attack": 24
+        },
+        {
+            "name": "ThunderboltSpear-YYY-027",
+            "health": 29,
+            "shield": 17,
+            "regeneration": 0,
+            "attack": 27
+        },
+        {
+            "name": "HyperionBlade-YYY-030",
+            "health": 21,
+            "shield": 20,
+            "regeneration": 0,
+            "attack": 30
+        },
+        {
+            "name": "IroncladVengeance-YIV-018",
+            "health": 18,
+            "shield": 15,
+            "regeneration": 4,
+            "attack": 18
+        },
+        {
+            "name": "GalactronPowerhouse-III-021",
+            "health": 14,
+            "shield": 22,
+            "regeneration": 3,
+            "attack": 21
+        },
+        {
+            "name": "InvincibleWarlord-YII-024",
+            "health": 20,
+            "shield": 18,
+            "regeneration": 2,
+            "attack": 24
+        },
+        {
+            "name": "AlphaDominion-YYI-027",
+            "health": 17,
+            "shield": 23,
+            "regeneration": 1,
+            "attack": 27
+        }
+    ]
+}
