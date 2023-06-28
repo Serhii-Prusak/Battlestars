@@ -2,32 +2,6 @@ import random
 import time
 import json
 import pprint
-
-
-def balance_parameters_ships(n=100):
-        ship = lambda i: (data['ships'][i]['name'], data['ships'][i]['health'], data['ships'][i]['shield'], data['ships'][i]['regeneration'], data['ships'][i]['attack'])
-        total_dict = {}
-        for s in range(len(data['ships'])):
-            total_dict[s] = []    
-            for op in range(len(data['ships'])):
-                total_dict[s].append(0)
-                if op == s:
-                    continue
-                res = [0, 0] 
-                for i in range(n):
-                    p1 = Battlestar(*ship(s))
-                    p2 = Battlestar(*ship(op))
-                    while not p1.is_dead() and not p2.is_dead():
-                        p1.fight_round(p2)
-                        p1.change_shield(p1.regeneration)
-                        p2.change_shield(p2.regeneration)
-                    res[0] += int(not p1.is_dead()) + int(p2.is_dead())
-                    res[1] += int(not p2.is_dead()) + int(p1.is_dead())
-                total_dict[s][-1] += res[0] - n
-                # print('result is: ', res, 'for', p2.max_health + p2.max_shield)
-        for el in sorted(total_dict, key=lambda x: sum(total_dict[x]), reverse=True):
-            print(f"Ship {el:2} - {data['ships'][el]['name'][-7:]} has {sum(total_dict[el])/n:=+6.2f}")
-
             
 class Battlestar():
     
@@ -94,16 +68,51 @@ class Battlestar():
         return(f"Health of your ship is: {self.health}, current shield is on {shield_percentage}% level - {self.shield}")
     
 
+def balance_parameters_ships(n=100):
+    """
+    Every ship is fighting against each other n iterrations
+    After getting average result adjust it to be more competible
+    """
+    with open('ships.json', 'r') as f:
+        data = json.load(f)
+
+    ship = lambda i: (data['ships'][i]['name'], data['ships'][i]['health'], data['ships'][i]['shield'], data['ships'][i]['regeneration'], data['ships'][i]['attack'])
+    total_dict = {}
+    
+    for s in range(len(data['ships'])):
+        total_dict[s] = []    
+        for op in range(len(data['ships'])):
+            total_dict[s].append(0)
+            if op == s:
+                continue
+            res = [0, 0] 
+            for i in range(n):
+                p1 = Battlestar(*ship(s))
+                p2 = Battlestar(*ship(op))
+                while not p1.is_dead() and not p2.is_dead():
+                    p1.fight_round(p2)
+                    p1.change_shield(p1.regeneration)
+                    p2.change_shield(p2.regeneration)
+                res[0] += int(not p1.is_dead()) + int(p2.is_dead())
+                res[1] += int(not p2.is_dead()) + int(p1.is_dead())
+            total_dict[s][-1] += res[0] - n
+            # print('result is: ', res, 'for', p2.max_health + p2.max_shield)
+    for el in sorted(total_dict, key=lambda x: sum(total_dict[x]), reverse=True):
+        print(f"Ship {el:2} - {data['ships'][el]['name'][-7:]} has {sum(total_dict[el])/n:=+6.2f}")
+
 if __name__ == "__main__":
 
     start = time.time()
 
-    with open('ships.json', 'r') as f:
-        data = json.load(f)
+    # _________________________________________________________
+    # _____________balance of the ships________________________
+    # _________________________________________________________
+    # balance_parameters_ships(100)
+    # _________________________________________________________
 
-    balance_parameters_ships(100)
-    # p1 = Battlestar(10, 35, 3, 20)
-    # p2 = Battlestar(35, 22, 1, 19)
+
+    p1 = Battlestar(60, 26, 1, 15)
+    p2 = Battlestar(42, 36, 0, 18)
     # i = 1
     # while p1.health == p1.max_health and p2.health == p2.max_health:
         
