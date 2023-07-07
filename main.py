@@ -5,8 +5,10 @@ import pprint
             
 class Battlestar():
     
-    MAX_CRIT = 10
     BASE_ACCURACY = 5
+    TACTICS = ('Additional damage on rolling 4 next round',
+               'Double damage on rolling 6 next round',
+               'Heal damage/shields on rolling 3 next round')
 
     def __init__(self, name, health, shield, regeneration, attack):
         self.name = name
@@ -17,7 +19,9 @@ class Battlestar():
         self.regeneration = regeneration
         self.attack = attack
         self.accuracy = Battlestar.BASE_ACCURACY
-        self.crit = 0
+        self.power = 0
+        self.filled_power = False
+        self.tactic = random.randint(1, len(Battlestar.TACTICS))
 
 
     def roll_attack(self):
@@ -43,9 +47,35 @@ class Battlestar():
     def hit(self, dices:list):
         return sum([dice >= Battlestar.BASE_ACCURACY for dice in dices])
     
+    @classmethod
+    def gain_power(self, dices:list):
+        return len([dice for dice in dices if dice == 1])
+
 
     def damage(self):
-        return Battlestar.hit(self.roll_attack())
+        dices = self.roll_attack()
+        self.power += Battlestar.gain_power(dices)
+        if self.filled_power:
+            if self.tactic == 0:
+                roll = 4
+                print('Crit by 4')
+                self.filled_power = False
+                return Battlestar.hit(dices) + len([dice for dice in dices if dice == roll])
+            elif self.tactic == 1:
+                roll = 6
+                print('Crit by 6')
+                self.filled_power = False
+                return Battlestar.hit(dices) + len([dice for dice in dices if dice == roll])
+            elif self.tactic == 2:
+                roll = 3
+                print('Heal by 3')
+                self.change_health(len([dice for dice in dices if dice == roll]))
+                self.change_shield(max(len([dice for dice in dices if dice == roll]) + self.health - self.max_health, 0))
+                self.filled_power = False
+                return Battlestar.hit(dices)
+
+        else:
+            return Battlestar.hit(dices)
     
     
     def fight_round(self, other):
@@ -62,11 +92,19 @@ class Battlestar():
         else:
             self.change_shield(-other_damage)
 
+
+    def check_power(self):
+        if self.power >= self.attack:
+            self.filled_power = True
+            self.power -= self.attack
+
         
     def __str__(self) -> str:
         shield_percentage = round(self.shield / self.max_shield * 100, 2) if self.max_shield else 0
         return(f"Health of your ship is: {self.health}, current shield is on {shield_percentage}% level - {self.shield}")
     
+    #TODO: add crit checks, whem rolling 1s
+    #TODO: add 3 rolls for repairing damage
 
 def balance_parameters_ships(n=100):
     """
@@ -107,12 +145,12 @@ if __name__ == "__main__":
     # _________________________________________________________
     # _____________balance of the ships________________________
     # _________________________________________________________
-    # balance_parameters_ships(100)
+    balance_parameters_ships(100)
     # _________________________________________________________
 
 
-    p1 = Battlestar(60, 26, 1, 15)
-    p2 = Battlestar(42, 36, 0, 18)
+    # p1 = Battlestar('Death star', 60, 26, 1, 15)
+    # p2 = Battlestar('Test-droid', 42, 36, 0, 18)
     # i = 1
     # while p1.health == p1.max_health and p2.health == p2.max_health:
         
@@ -121,9 +159,12 @@ if __name__ == "__main__":
     #     p1.fight_round(p2)
     #     p1.change_shield(p1.regeneration)
     #     p2.change_shield(p2.regeneration)
+    #     p1.check_power()
+    #     p2.check_power()
     #     print(p1)
+    #     print(p1.power, p1.filled_power)
     #     print(p2)
-
+    #     print(p2.power, p2.filled_power)
     #     i += 1
     #     time.sleep(2)
 
@@ -134,9 +175,14 @@ if __name__ == "__main__":
     #     p1.fight_round(p2)
     #     p1.change_shield(p1.regeneration)
     #     p2.change_shield(p2.regeneration)
+    #     p1.check_power()
+    #     p2.check_power()
     #     print(p1)
+    #     print(p1.power, p1.filled_power)
     #     print(p2)
+    #     print(p2.power, p2.filled_power)
 
     #     i += 1
     #     time.sleep(3)
+
     print(f"Processed time is {time.time() - start} sec")
