@@ -5,7 +5,7 @@ class Test(unittest.TestCase):
 
     def test_init(self):
         "should return 40, 20, 2 and 10"
-        p = Battlestar(40, 20, 2, 10)
+        p = Battlestar('star1', 40, 20, 2, 10)
         self.assertEqual(p.attack, 10)
         self.assertEqual(p.health, 40)
         self.assertEqual(p.regeneration, 2)
@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
 
     def test_roll_attack(self):
         "list of data from 1 to 6 with length of attack"
-        p = Battlestar(40, 20, 2, 30)
+        p = Battlestar('star1', 40, 20, 2, 30)
         count = 0
         for el in p.roll_attack():
             count += 1
@@ -24,7 +24,7 @@ class Test(unittest.TestCase):
 
     def test_change_health(self):
         "not more than max health, 40 - 10 = 30, 30 + 20 = 40, 40 - 50 = 0"
-        p = Battlestar(40, 20, 2, 10)
+        p = Battlestar('star1', 40, 20, 2, 10)
         p.change_health(-10)
         self.assertEqual(p.health, 30)
         p.change_health(20)
@@ -35,7 +35,7 @@ class Test(unittest.TestCase):
 
     def test_change_shield(self):
         "not more than max shield, 20 - 10 = 10, 10 + 20 = 20, 20 - 50 = 0"
-        p = Battlestar(40, 20, 2, 10)
+        p = Battlestar('star1', 40, 20, 2, 10)
         p.change_shield(-10)
         self.assertEqual(p.shield, 10)
         p.change_shield(20)
@@ -46,7 +46,7 @@ class Test(unittest.TestCase):
 
     def test_is_dead(self):
         "20 health is not dead, 0 - is dead"
-        p = Battlestar(40, 20, 2, 10)
+        p = Battlestar('star1', 40, 20, 2, 10)
         p.change_health(-20)
         self.assertFalse(p.is_dead())
         p.change_health(-30)
@@ -60,7 +60,7 @@ class Test(unittest.TestCase):
     
     def test_damage(self):
         "run 10000 rounds of attach and calculate damage:) - in average it should be 1/3 and alpha = 99% (diff < 0.01)"
-        p = Battlestar(40, 20, 2, 30)
+        p = Battlestar('star1', 40, 20, 2, 30)
         res = 0
         for i in range(10000):
             res += p.damage()
